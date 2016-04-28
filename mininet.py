@@ -26,16 +26,18 @@ class MyTopo( Topo ):
         napt = self.addSwitch( 'napt1')
         
         h1 = self.addHost( 'h1', ip='100.0.0.10/24' )
-        h2 = self.addHost( 'h2', ip='100.0.0.10/24' )
-        h3 = self.addHost( 'h3', ip='100.0.0.10/24' )
-        h4 = self.addHost( 'h4', ip='100.0.0.10/24' )
+        h2 = self.addHost( 'h2', ip='100.0.0.11/24' )
+        h3 = self.addHost( 'h3', ip='100.0.0.50/24' )
+        h4 = self.addHost( 'h4', ip='100.0.0.51/24' )
         
-        ds1 = self.addHost( 'ds1' )
-        ds2 = self.addHost( 'ds2' )
-        ds3 = self.addHost( 'ds3' )
-        ws1 = self.addHost( 'ws1' )
-        ws2 = self.addHost( 'ws2' )
-        ws3 = self.addHost( 'ws3' )
+        ds1 = self.addHost( 'ds1', ip='100.0.0.20/24' )
+        ds2 = self.addHost( 'ds2', ip='100.0.0.21/24' )
+        ds3 = self.addHost( 'ds3', ip='100.0.0.22/24' )
+        ws1 = self.addHost( 'ws1', ip='100.0.0.40/24' )
+        ws2 = self.addHost( 'ws2', ip='100.0.0.41/24' )
+        ws3 = self.addHost( 'ws3', ip='100.0.0.42/24' )
+
+        insp = self.addHost( 'insp1', ip='100.0.0.30/24' )
         
         # Add links
         # Public Zone
@@ -57,6 +59,7 @@ class MyTopo( Topo ):
         self.addLink( sw2, ids ) 
         self.addLink( lb2, ids )
         self.addLink( lb2, sw4 )
+        self.addLink( ids, insp )
 
         #Firewall 2 , NAPT, Private zone
         self.addLink( fw2, sw2)
