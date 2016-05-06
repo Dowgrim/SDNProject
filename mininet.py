@@ -1,4 +1,11 @@
+#!/usr/bin/python
+
+from mininet.net import Mininet
 from mininet.topo import Topo
+from mininet.log import setLogLevel
+from mininet.cli import CLI
+from mininet.node import Controller
+from mininet.node import RemoteController
 
 class MyTopo( Topo ):
     "Simple topology example."
@@ -9,27 +16,28 @@ class MyTopo( Topo ):
         # Initialize topology
         Topo.__init__( self )
 
+
         # Add hosts and switches 
         sw1 = self.addSwitch( 's1' )
         sw2 = self.addSwitch( 's2' )
         sw3 = self.addSwitch( 's3' )
         sw4 = self.addSwitch( 's4' )
         sw5 = self.addSwitch( 's5' )
-        
-        fw1 = self.addSwitch( 'fw1')
-        fw2 = self.addSwitch( 'fw2')
-        
-        lb1 = self.addSwitch( 'lb1')
-        lb2 = self.addSwitch( 'lb2')
-        
-        ids  = self.addSwitch( 'ids1')
-        napt = self.addSwitch( 'napt1')
-        
+
+        fw1 = self.addSwitch( 's6')
+        fw2 = self.addSwitch( 's7')
+
+        lb1 = self.addSwitch( 's8')
+        lb2 = self.addSwitch( 's9')
+
+        ids  = self.addSwitch( 's10')
+        napt = self.addSwitch( 's11')
+
         h1 = self.addHost( 'h1', ip='100.0.0.10/24' )
         h2 = self.addHost( 'h2', ip='100.0.0.11/24' )
         h3 = self.addHost( 'h3', ip='100.0.0.50/24' )
         h4 = self.addHost( 'h4', ip='100.0.0.51/24' )
-        
+
         ds1 = self.addHost( 'ds1', ip='100.0.0.20/24' )
         ds2 = self.addHost( 'ds2', ip='100.0.0.21/24' )
         ds3 = self.addHost( 'ds3', ip='100.0.0.22/24' )
@@ -38,7 +46,7 @@ class MyTopo( Topo ):
         ws3 = self.addHost( 'ws3', ip='100.0.0.42/24' )
 
         insp = self.addHost( 'insp1', ip='100.0.0.30/24' )
-        
+
         # Add links
         # Public Zone
         self.addLink( h1, sw1 )
@@ -53,10 +61,10 @@ class MyTopo( Topo ):
         self.addLink( ws1, sw4 )
         self.addLink( ws2, sw4 )
         self.addLink( ws3, sw4 )
-       
+
         self.addLink( sw2, lb1 )
         self.addLink( sw3, lb1 )
-        self.addLink( sw2, ids ) 
+        self.addLink( sw2, ids )
         self.addLink( lb2, ids )
         self.addLink( lb2, sw4 )
         self.addLink( ids, insp )
@@ -69,4 +77,8 @@ class MyTopo( Topo ):
         self.addLink( h4 , sw5)
 
 
-topos = { 'mytopo': ( lambda: MyTopo() ) }
+#topos = { 'mytopo': ( lambda: MyTopo() ) }
+net = Mininet(topo=MyTopo(), controller=None)
+net.addController('c0',controller=RemoteController, ip='127.0.0.1', port=6633)
+net.start()
+CLI(net)
